@@ -171,3 +171,5 @@ if ! test -d conda >/dev/null; then
     rm ~/miniconda3/miniconda.sh
   fi
 fi
+
+fancy_echo "Installation successful!"
