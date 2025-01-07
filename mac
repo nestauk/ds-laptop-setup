@@ -154,6 +154,12 @@ if ! test -d "/Applications/Docker.app"; then
   rm "$HOME/Docker.dmg"
 fi
 
+# installing poetry
+if ! test -d poetry >/dev/null; then
+  fancy_echo "Installing poetry..."
+  curl -sSL https://install.python-poetry.org | python3 -
+fi
+
 # installing conda
 if ! test -d conda >/dev/null; then
   read -r -p "Do you want to install conda? [y/n] " conda_dep

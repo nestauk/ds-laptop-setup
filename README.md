@@ -36,6 +36,7 @@ Command-line tools (Python):
 
 - [pyenv](https://github.com/pyenv/pyenv) Python version manager
 - [uv](https://astral.sh/blog/uv), another Python package manager and installer (all-in-one!)
+- [poetry](https://python-poetry.org/), yet another Python package manager
 - [miniconda](https://docs.anaconda.com/miniconda/) **(optional)**, system package manager that we mainly use for our Python environment setup
 
 Command-line tools (Other):
