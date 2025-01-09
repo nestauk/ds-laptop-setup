@@ -125,6 +125,8 @@ brew "awscli"
 brew "direnv"
 brew "zsh"
 brew "pyenv"
+brew "pyenv-virtualenv"
+brew "cookiecutter"
 
 # Applications
 cask "iterm2" unless File.directory?("/Applications/iTerm.app")
@@ -142,6 +144,12 @@ if ! command -v uv >/dev/null; then
   fancy_echo "Installing uv..."
   curl -LsSf https://astral.sh/uv/install.sh | sh
   append_to_zshrc 'eval "$(uv generate-shell-completion zsh)"'
+fi
+
+# installing ruff
+if ! command -v ruff >/dev/null; then
+  fancy_echo "Installing ruff..."
+  curl -LsSf https://astral.sh/ruff/install.sh | sh
 fi
 
 # installing docker

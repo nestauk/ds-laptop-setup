@@ -34,16 +34,19 @@ Then submit an [issue](https://github.com/nestauk/ds-laptop-setup/issues/new).
 
 Command-line tools (Python):
 
+- [uv](https://docs.astral.sh/uv/), another Python package manager and installer (all-in-one!) 
 - [pyenv](https://github.com/pyenv/pyenv) Python version manager
-- [uv](https://astral.sh/blog/uv), another Python package manager and installer (all-in-one!)
+- [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv), pyenv plugin to manage Python versions within virtual environments
 - [poetry](https://python-poetry.org/), yet another Python package manager
 - [miniconda](https://docs.anaconda.com/miniconda/) **(optional)**, system package manager that we mainly use for our Python environment setup
+- [ruff](https://docs.astral.sh/ruff/) for Python formatting and linting
 
 Command-line tools (Other):
 
 - [git](https://git-scm.com/) for version control
 - [awscli](https://aws.amazon.com/cli/) to interact with AWS from the command line
 - [homebrew](https://brew.sh/) package manager for installing software on your machine
+- [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) tool to build projects from templates
 
 Development tools:
 
