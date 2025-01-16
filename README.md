@@ -50,7 +50,7 @@ Command-line tools (Other):
 
 Development tools:
 
-- [Visual Studio Code](https://code.visualstudio.com/) code editor
+- [Visual Studio Code](https://code.visualstudio.com/) code editor, command line interface, and helpful extensions for easier development
 - [Docker](https://www.docker.com/) for containerized development
 - [direnv](https://direnv.net/) to read environment variables from your directory
 
