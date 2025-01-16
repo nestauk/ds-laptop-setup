@@ -175,11 +175,14 @@ if ! test -d conda >/dev/null; then
   curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-$condainstall.sh -o ~/miniconda3/miniconda.sh
   bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
   rm ~/miniconda3/miniconda.sh
-  # setting conda to note activate base in every terminal by default
+
+  # activate conda so available on command line
+  source ~/miniconda3/bin/activate
+  # setting conda to not activate base in every terminal by default
   echo "channels:
-    - nodefaults
-    - conda-forge
-  auto_activate_base: false" > ~/.condarc
+  - nodefaults
+  - conda-forge
+auto_activate_base: false" > ~/.condarc
 fi
 
 fancy_echo "Installation successful!"
