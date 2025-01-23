@@ -8,6 +8,8 @@ The script can be run multiple times, with any existing installations skipped or
 
 The script has been tested on macOS Sequoia (15.x) on Apple Silicon, but should run on Intel chips and older versions of macOS. Further testing will be implemented as necessary. Please file a bug report as an issue if you come across any errors.
 
+Installation requires admin rights. For Nesta colleagues, please request admin permissions via the #ask-tech-nesta Slack channel.
+
 ## Install
 
 Download, review, and execute the script:
