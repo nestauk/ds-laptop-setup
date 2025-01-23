@@ -127,6 +127,7 @@ brew "zsh"
 brew "pyenv"
 brew "pyenv-virtualenv"
 brew "cookiecutter"
+brew "rustup"
 
 # Applications
 cask "iterm2" unless File.directory?("/Applications/iTerm.app")
@@ -166,6 +167,12 @@ fi
 if ! test -d poetry >/dev/null; then
   fancy_echo "Installing poetry..."
   curl -sSL https://install.python-poetry.org | python3 -
+fi
+
+# installing Rust
+if ! test -d rustc >/dev/null; then
+  fancy_echo "Installing Rust..."
+  rustup-init -y
 fi
 
 # installing conda

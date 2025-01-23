@@ -49,6 +49,7 @@ Command-line tools (Other):
 - [awscli](https://aws.amazon.com/cli/) to interact with AWS from the command line
 - [homebrew](https://brew.sh/) package manager for installing software on your machine
 - [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) tool to build projects from templates
+- [Rust](https://www.rust-lang.org/) toolchain depended upon by many modern packages
 
 Development tools:
 
