@@ -20,7 +20,7 @@ less mac
 sh mac 2>&1 | tee ~/laptop.log
 ```
 
-Run with admin rights. You may be prompted to enter your password during the installation process, and select to install optional dependencies when the prompts appear. 
+Run with admin rights. You may be prompted to enter your password during the installation process, and select to install optional dependencies when the prompts appear. On MacOS, you do not see characters when typing your password in the shell.
 
 ## Debugging
 
