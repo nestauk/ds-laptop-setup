@@ -1,0 +1,224 @@
+#!/bin/sh
+
+# Welcome to the Nesta DSP laptop script!
+# I have edited the script available in https://github.com/thoughtbot/laptop,
+# so many thanks to that team for providing a clear and effective tool I could off of.
+# Get ready to change your machine!
+
+fancy_echo() {
+  local fmt="$1"; shift
+
+  # shellcheck disable=SC2059
+  printf "\\n$fmt\\n" "$@"
+}
+
+append_to_zshrc() {
+  local text="$1" zshrc
+  local skip_new_line="${2:-0}"
+
+  if [ -w "$HOME/.zshrc.local" ]; then
+    zshrc="$HOME/.zshrc.local"
+  else
+    zshrc="$HOME/.zshrc"
+  fi
+
+  if ! grep -Fqs "$text" "$zshrc"; then
+    if [ "$skip_new_line" -eq 1 ]; then
+      printf "%s\\n" "$text" >> "$zshrc"
+    else
+      printf "\\n%s\\n" "$text" >> "$zshrc"
+    fi
+  fi
+}
+
+# shellcheck disable=SC2154
+trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
+
+# ensure immediate exit upon error
+set -e
+
+if [ ! -d "$HOME/.bin/" ]; then
+  mkdir "$HOME/.bin"
+fi
+
+if [ ! -f "$HOME/.zshrc" ]; then
+  touch "$HOME/.zshrc"
+fi
+
+# path hook into zsh
+if ! grep -q "\$HOME/.bin:\$PATH" "$HOME/.zshrc"; then
+  fancy_echo "Adding bin to path"
+  append_to_zshrc 'export PATH="$HOME/.bin:$PATH"'
+fi
+
+# Determine Homebrew prefix
+arch="$(uname -m)"
+if [ "$arch" = "arm64" ]; then
+  HOMEBREW_PREFIX="/opt/homebrew"
+else
+  HOMEBREW_PREFIX="/usr/local"
+fi
+
+update_shell() {
+  local shell_path;
+  shell_path="$(command -v zsh)"
+
+  fancy_echo "Changing your shell to zsh ..."
+  if ! grep "$shell_path" /etc/shells > /dev/null 2>&1 ; then
+    fancy_echo "Adding '$shell_path' to /etc/shells"
+    sudo sh -c "echo $shell_path >> /etc/shells"
+  fi
+  sudo chsh -s "$shell_path" "$USER"
+}
+
+case "$SHELL" in
+  */zsh)
+    if [ "$(command -v zsh)" != "$HOMEBREW_PREFIX/bin/zsh" ] ; then
+      update_shell
+    fi
+    ;;
+  *)
+    update_shell
+    ;;
+esac
+
+# checks architecture for rosetta, docker, and conda
+if [ "$(uname -m)" = "arm64" ]
+  then
+  declare dockerinstall="arm64"
+  declare condainstall="arm64"
+  # checks if Rosetta is already installed
+  if ! pkgutil --pkg-info=com.apple.pkg.RosettaUpdateAuto > /dev/null 2>&1
+  then
+    echo "Installing Rosetta"
+    # Installs Rosetta2
+    softwareupdate --install-rosetta --agree-to-license
+  else
+    echo "Rosetta is installed"
+  fi
+  else
+    declare dockerinstall="amd64"
+    declare condainstall="x86_64"
+fi
+
+if ! command -v brew >/dev/null; then
+  fancy_echo "Installing Homebrew ..."
+    /bin/bash -c \
+      "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    append_to_zshrc "eval \"\$($HOMEBREW_PREFIX/bin/brew shellenv)\""
+
+    export PATH="$HOMEBREW_PREFIX/bin:$PATH"
+fi
+
+if brew list | grep -Fq brew-cask; then
+  fancy_echo "Uninstalling old Homebrew-Cask ..."
+  brew uninstall --force brew-cask
+fi
+
+fancy_echo "Updating Homebrew formulae ..."
+brew update --force # https://github.com/Homebrew/brew/issues/1151
+brew bundle --file=- <<EOF
+# Command-line tools
+brew "git"
+brew "awscli"
+brew "direnv"
+brew "zsh"
+brew "pyenv"
+brew "pyenv-virtualenv"
+brew "cookiecutter"
+brew "rustup"
+
+# Applications
+cask "iterm2" unless File.directory?("/Applications/iTerm.app")
+cask "visual-studio-code" unless File.directory?("/Applications/Visual Studio Code.app")
+EOF
+
+# direnv hook into zsh
+if ! grep -q "direnv hook zsh" "$HOME/.zshrc"; then
+  fancy_echo "Adding direnv to zshrc"
+  append_to_zshrc 'eval "$(direnv hook zsh)"'
+fi
+
+# installing uv
+if ! command -v uv >/dev/null; then
+  fancy_echo "Installing uv..."
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  append_to_zshrc 'eval "$(uv generate-shell-completion zsh)"'
+fi
+
+# installing ruff
+if ! command -v ruff >/dev/null; then
+  fancy_echo "Installing ruff..."
+  curl -LsSf https://astral.sh/ruff/install.sh | sh
+fi
+
+# installing docker
+if ! test -d "/Applications/Docker.app"; then
+  fancy_echo "Installing docker..."
+  curl -fsSL "https://desktop.docker.com/mac/main/$dockerinstall/Docker.dmg" -o "$HOME/Docker.dmg"
+  sudo hdiutil attach "$HOME/Docker.dmg"
+  sudo /Volumes/Docker/Docker.app/Contents/MacOS/install
+  sudo hdiutil detach /Volumes/Docker
+  rm "$HOME/Docker.dmg"
+fi
+
+# installing poetry
+if ! test -d poetry >/dev/null; then
+  fancy_echo "Installing poetry..."
+  curl -sSL https://install.python-poetry.org | python3 -
+fi
+
+# installing Rust
+if ! test -d rustc >/dev/null; then
+  fancy_echo "Installing Rust..."
+  rustup-init -y
+fi
+
+# installing conda
+if ! test -d conda >/dev/null; then
+  fancy_echo "Installing miniconda..."
+  mkdir -p ~/miniconda3
+  curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-$condainstall.sh -o ~/miniconda3/miniconda.sh
+  bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+  rm ~/miniconda3/miniconda.sh
+
+  # activate conda so available on command line
+  source ~/miniconda3/bin/activate
+  # setting conda to not activate base in every terminal by default
+  echo "channels:
+  - nodefaults
+  - conda-forge
+auto_activate_base: false" > ~/.condarc
+fi
+
+# installing vscode extensions
+extensions=(
+    charliermarsh.ruff
+    github.copilot
+    github.copilot-chat
+    janisdd.vscode-edit-csv
+    mechatroner.rainbow-csv
+    mikestead.dotenv
+    ms-azuretools.vscode-docker
+    ms-python.debugpy
+    ms-python.python
+    ms-python.vscode-pylance
+    ms-toolsai.jupyter
+    ms-toolsai.jupyter-keymap
+    ms-toolsai.jupyter-renderers
+    ms-toolsai.vscode-jupyter-cell-tags
+    ms-toolsai.vscode-jupyter-slideshow
+    ms-vscode-remote.remote-containers
+)
+
+fancy_echo "Installing VSCode extensions..."
+
+# install each extension, force to update if already installed
+for extension in "${extensions[@]}"; do
+    code --force --install-extension "$extension"
+done
+
+fancy_echo "VSCode extension installation complete!"
+
+fancy_echo "Installation successful!"
