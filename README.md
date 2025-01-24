@@ -12,11 +12,10 @@ Installation requires admin rights. For Nesta colleagues, please request admin p
 
 ## Install
 
-Download, review, and execute the script:
+Download and execute the script:
 
 ```shell
 curl --remote-name https://raw.githubusercontent.com/nestauk/ds-laptop-setup/dev/mac
-less mac
 sh mac 2>&1 | tee ~/laptop.log
 ```
 
