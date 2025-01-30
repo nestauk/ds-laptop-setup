@@ -234,8 +234,8 @@ done
 
 fancy_echo "VSCode extension installation complete!"
 
-# load in all updated configurations in zshrc
-fancy_echo "Reloading terminal with new configurations!
+fancy_echo "Reloading terminal with new configurations!"
+
 exec zsh
 
 fancy_echo "Installation successful!"
