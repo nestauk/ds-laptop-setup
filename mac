@@ -140,6 +140,19 @@ if ! grep -q "direnv hook zsh" "$HOME/.zshrc"; then
   append_to_zshrc 'eval "$(direnv hook zsh)"'
 fi
 
+# setup zsh plugins
+
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  fancy_echo "Installing Oh My Zsh..."
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+  fancy_echo "Installing zsh-autocompletions..."
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions)/' ~/.zshrc
+fi
+
 # installing uv
 if ! command -v uv >/dev/null; then
   fancy_echo "Installing uv..."
@@ -220,5 +233,9 @@ for extension in "${extensions[@]}"; do
 done
 
 fancy_echo "VSCode extension installation complete!"
+
+# load in all updated configurations in zshrc
+fancy_echo "Reloading terminal with new configurations!
+source ~/.zshrc
 
 fancy_echo "Installation successful!"

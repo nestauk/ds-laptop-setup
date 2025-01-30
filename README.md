@@ -49,6 +49,7 @@ Command-line tools (Other):
 - [homebrew](https://brew.sh/) package manager for installing software on your machine
 - [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) tool to build projects from templates
 - [Rust](https://www.rust-lang.org/) toolchain depended upon by many modern packages
+- [Oh my Zsh](https://ohmyz.sh/) command line tools to improve your experience in the shell, particularly with [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) 
 
 Development tools:
 
