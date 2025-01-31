@@ -15,7 +15,7 @@ Installation requires admin rights. For Nesta colleagues, please request admin p
 Download and execute the script:
 
 ```shell
-curl --remote-name https://raw.githubusercontent.com/nestauk/ds-laptop-setup/dev/mac
+curl --remote-name https://raw.githubusercontent.com/nestauk/ds-laptop-setup/main/mac
 sh mac 2>&1 | tee ~/laptop.log
 ```
 
