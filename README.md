@@ -44,7 +44,7 @@ Command-line tools (Python):
 
 Command-line tools (Other):
 
-- [git](https://git-scm.com/) for version control
+- [git](https://git-scm.com/) for version control, with sensible global configs
 - [awscli](https://aws.amazon.com/cli/) to interact with AWS from the command line
 - [homebrew](https://brew.sh/) package manager for installing software on your machine
 - [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) tool to build projects from templates
