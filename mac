@@ -121,6 +121,7 @@ brew update --force # https://github.com/Homebrew/brew/issues/1151
 brew bundle --file=- <<EOF
 # Command-line tools
 brew "git"
+brew "gh"
 brew "awscli"
 brew "direnv"
 brew "zsh"
@@ -138,6 +139,19 @@ EOF
 if ! grep -q "direnv hook zsh" "$HOME/.zshrc"; then
   fancy_echo "Adding direnv to zshrc"
   append_to_zshrc 'eval "$(direnv hook zsh)"'
+fi
+
+# setup zsh plugins
+
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  fancy_echo "Installing Oh My Zsh..."
+  RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+  fancy_echo "Installing zsh-autocompletions..."
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions)/' ~/.zshrc
 fi
 
 # installing uv
@@ -221,4 +235,7 @@ done
 
 fancy_echo "VSCode extension installation complete!"
 
+fancy_echo "Reloading terminal with new configurations!"
 fancy_echo "Installation successful!"
+
+exec zsh
