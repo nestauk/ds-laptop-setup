@@ -259,7 +259,11 @@ git config --global init.defaultBranch main
 fancy_echo "Git config set up complete!"
 fancy_echo "Setup ~/.R/Makevars"
 
+if [ ! -d "$HOME/.R" ]; then
+  mkdir "$HOME/.R"
+fi
 
+curl --output "$HOME/.R/Makevars" -fsSL https://github.com/nestauk/ds-laptop-setup/blob/main/Makevars
 
 fancy_echo "Reloading terminal with new configurations!"
 fancy_echo "Installation successful!"
