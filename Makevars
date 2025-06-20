@@ -1,0 +1,19 @@
+# Setup for MacOS R install to sit in ~/.R/Makevars
+XCBASE:=$(shell xcrun --show-sdk-path)
+LLVMBASE:=$(shell brew --prefix llvm)
+GCCBASE:=$(shell brew --prefix gcc)
+GETTEXT:=$(shell brew --prefix gettext)
+
+CC=$(LLVMBASE)/bin/clang
+CXX=$(LLVMBASE)/bin/clang++
+CXX11=$(LLVMBASE)/bin/clang++
+CXX14=$(LLVMBASE)/bin/clang++
+CXX17=$(LLVMBASE)/bin/clang++
+CXX1X=$(LLVMBASE)/bin/clang++
+
+CPPFLAGS=-isystem "$(LLVMBASE)/include" -isysroot "$(XCBASE)" -I"$(GETTEXT)/include"
+LDFLAGS=-L"$(LLVMBASE)/lib" -lomp -L"$(GETTEXT)/lib" --sysroot="$(XCBASE)"
+
+FC=$(GCCBASE)/bin/gfortran
+F77=$(GCCBASE)/bin/gfortran
+FLIBS=-L$(GCCBASE)/lib/gcc/9/ -lm
