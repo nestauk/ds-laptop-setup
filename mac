@@ -107,17 +107,15 @@ if ! command -v brew >/dev/null; then
       "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
     append_to_zshrc "eval \"\$($HOMEBREW_PREFIX/bin/brew shellenv)\""
-
-    export PATH="$HOMEBREW_PREFIX/bin:$PATH"
+    echo >> ~/.zprofile
+    echo 'eval "$('"$HOMEBREW_PREFIX"'/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
 fi
 
 if brew list | grep -Fq brew-cask; then
   fancy_echo "Uninstalling old Homebrew-Cask ..."
   brew uninstall --force brew-cask
 fi
-
-# XCode for R
-xcode-select --install
 
 fancy_echo "Updating Homebrew formulae ..."
 brew update --force # https://github.com/Homebrew/brew/issues/1151
@@ -263,7 +261,8 @@ if [ ! -d "$HOME/.R" ]; then
   mkdir "$HOME/.R"
 fi
 
-curl --output "$HOME/.R/Makevars" -fsSL https://github.com/nestauk/ds-laptop-setup/blob/main/Makevars
+curl --output "$HOME/.R/Makevars" -fsSL https://raw.githubusercontent.com/nestauk/ds-laptop-setup/main/Makevars
+
 
 fancy_echo "Reloading terminal with new configurations!"
 fancy_echo "Installation successful!"
