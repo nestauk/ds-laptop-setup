@@ -226,9 +226,6 @@ fancy_echo "VSCode extension installation complete!"
 fancy_echo "Setting git config defaults..."
 
 git config --global init.defaultBranch main
-git config --global core.editor "code --wait"
-git config --global diff.tool vscode
-git config --global difftool.vscode.cmd "code --wait --diff $LOCAL $REMOTE"
 
 fancy_echo "Git config set up complete!
 
