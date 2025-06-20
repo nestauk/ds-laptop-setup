@@ -129,6 +129,9 @@ brew "pyenv"
 brew "pyenv-virtualenv"
 brew "cookiecutter"
 brew "rustup"
+brew "gcc"
+brew "llvm"
+brew "gettext"
 
 # Applications
 cask "iterm2" unless File.directory?("/Applications/iTerm.app")
@@ -165,6 +168,12 @@ fi
 if ! command -v ruff >/dev/null; then
   fancy_echo "Installing ruff..."
   curl -LsSf https://astral.sh/ruff/install.sh | sh
+fi
+
+# installing air
+if ! command -v air >/dev/null; then
+  fancy_echo "Installing air..."
+  curl -LsSf https://github.com/posit-dev/air/releases/latest/download/air-installer.sh | sh
 fi
 
 # installing docker
