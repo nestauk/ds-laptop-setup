@@ -15,7 +15,7 @@ Installation requires admin rights. For Nesta colleagues, please request admin p
 Download and execute the script:
 
 ```shell
-curl --remote-name https://raw.githubusercontent.com/nestauk/ds-laptop-setup/dev/mac
+curl --remote-name https://raw.githubusercontent.com/nestauk/ds-laptop-setup/main/mac
 sh mac 2>&1 | tee ~/laptop.log
 ```
 
@@ -44,11 +44,13 @@ Command-line tools (Python):
 
 Command-line tools (Other):
 
-- [git](https://git-scm.com/) for version control, with sensible global configs
+- [git](https://git-scm.com/) for version control
+- [gh](https://cli.github.com/) GitHub command line interface
 - [awscli](https://aws.amazon.com/cli/) to interact with AWS from the command line
 - [homebrew](https://brew.sh/) package manager for installing software on your machine
 - [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) tool to build projects from templates
 - [Rust](https://www.rust-lang.org/) toolchain depended upon by many modern packages
+- [Oh my Zsh](https://ohmyz.sh/) command line tools to improve your experience in the shell, particularly with [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) 
 
 Development tools:
 
