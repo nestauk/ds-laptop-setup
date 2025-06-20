@@ -116,6 +116,9 @@ if brew list | grep -Fq brew-cask; then
   brew uninstall --force brew-cask
 fi
 
+# XCode for R
+xcode-select --install
+
 fancy_echo "Updating Homebrew formulae ..."
 brew update --force # https://github.com/Homebrew/brew/issues/1151
 brew bundle --file=- <<EOF
@@ -132,10 +135,12 @@ brew "rustup"
 brew "gcc"
 brew "llvm"
 brew "gettext"
+brew "r"
 
 # Applications
 cask "iterm2" unless File.directory?("/Applications/iTerm.app")
 cask "visual-studio-code" unless File.directory?("/Applications/Visual Studio Code.app")
+cask "rstudio" unless File.directory?("/Applications/RStudio.app")
 EOF
 
 # direnv hook into zsh
@@ -174,6 +179,7 @@ fi
 if ! command -v air >/dev/null; then
   fancy_echo "Installing air..."
   curl -LsSf https://github.com/posit-dev/air/releases/latest/download/air-installer.sh | sh
+
 fi
 
 # installing docker
@@ -250,7 +256,11 @@ fancy_echo "Setting git config defaults..."
 
 git config --global init.defaultBranch main
 
-fancy_echo "Git config set up complete!
+fancy_echo "Git config set up complete!"
+fancy_echo "Setup ~/.R/Makevars"
+
+
+
 fancy_echo "Reloading terminal with new configurations!"
 fancy_echo "Installation successful!"
 
