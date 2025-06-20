@@ -241,7 +241,7 @@ fancy_echo "Setting git config defaults..."
 
 git config --global init.defaultBranch main
 
-fancy_echo "Git config set up complete!
+fancy_echo "Git config set up complete!"
 fancy_echo "Reloading terminal with new configurations!"
 fancy_echo "Installation successful!"
 
