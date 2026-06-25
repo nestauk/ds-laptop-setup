@@ -129,6 +129,7 @@ brew "pyenv"
 brew "pyenv-virtualenv"
 brew "cookiecutter"
 brew "rustup"
+brew "just"
 
 # Applications
 cask "iterm2" unless File.directory?("/Applications/iTerm.app")
