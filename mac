@@ -45,6 +45,22 @@ if [ ! -f "$HOME/.zshrc" ]; then
   touch "$HOME/.zshrc"
 fi
 
+# setup zsh plugins
+# oh-my-zsh must be installed before we start appending to .zshrc, since its
+# installer overwrites .zshrc with its own template and would clobber any
+# earlier additions.
+
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  fancy_echo "Installing Oh My Zsh..."
+  RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+  fancy_echo "Installing zsh-autocompletions..."
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions)/' ~/.zshrc
+fi
+
 # path hook into zsh
 if ! grep -q "\$HOME/.bin:\$PATH" "$HOME/.zshrc"; then
   fancy_echo "Adding bin to path"
@@ -142,19 +158,6 @@ if ! grep -q "direnv hook zsh" "$HOME/.zshrc"; then
   append_to_zshrc 'eval "$(direnv hook zsh)"'
 fi
 
-# setup zsh plugins
-
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  fancy_echo "Installing Oh My Zsh..."
-  RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
-
-if [ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
-  fancy_echo "Installing zsh-autocompletions..."
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-  sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions)/' ~/.zshrc
-fi
-
 # installing uv
 if ! command -v uv >/dev/null; then
   fancy_echo "Installing uv..."
@@ -187,7 +190,7 @@ fi
 # installing Rust
 if ! test -d rustc >/dev/null; then
   fancy_echo "Installing Rust..."
-  rustup-init -y
+  rustup toolchain install stable
 fi
 
 # installing conda
